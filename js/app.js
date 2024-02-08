@@ -79,34 +79,41 @@ class Game {
     // }
 }
 
-//whichever dessert is selected the ingredients need to populate on the ingredients list
-var list = document.getElementById('list')
-list.forEach(dessertButton => {
-    var listItem = document.createElement('li')
-    listItem.classList.add('ingredient-list-item', 'text-capitalize')
-
-    var row = document.createElement('dessertButton')
-    row.classList.add('row')
-    
-    dessertButton.appendChild(listItem)
-    dessertButton.appendChild(row)
-
-})
 
 let ingredientsList = []
 var dessertType = [
-                'brownies',
-                'chocolate chip cookies',
-                'cupcakes',
-                'pancake'
-                ];
-//make dessert button
-// dessertItems.forEach(dessertBtn => {
-// })
+    'brownies',
+    'chocolate chip cookies',
+    'cupcakes',
+    'pancake'
+];
+
+
 
 brownies = document.getElementById('brownieBtn')
 brownies.addEventListener('click', ()=>{
     const brownieIngredients = dessertItems[0].ingredients
+    console.log(brownieIngredients)
+
+    var list = document.getElementById('list')
+//     dessertItems[0].ingredients.forEach(dessertButton => {
+//     var listItem = document.createElement('li')
+//     listItem.classList.add('ingredient-list-item', 'text-capitalize')
+    
+//     list.appendChild(listItem)
+//     listItem.innerText = ingredient
+// }
+for (const ingredient in brownieIngredients) {
+    var listItem = document.createElement('li')
+    listItem.classList.add('ingredient-list-item', 'text-capitalize')
+    
+    list.appendChild(listItem)
+    listItem.innerText = `${ingredient}: ${brownieIngredients[ingredient]}`
+    // listItem.innerText = brownieIngredients[ingredient]
+    console.log(`${ingredient}: ${brownieIngredients[ingredient]}`)
+
+}
+
     // const brownieIngredientsList = Object.keys(brownieIngredients)
     // const brownieItem = brownieIngredientsList[0]
 
@@ -115,8 +122,8 @@ brownies.addEventListener('click', ()=>{
     // for (let x in dessertItems.ingredients) {
     //     obj += dessertItems.ingredients[x] + ""
     // }
-    console.log(brownieIngredients)
-    console.log(dessertItems[0].ingredients)
+    // console.log(brownieIngredients)
+    // console.log(dessertItems[0].ingredients)
 
 })
 
@@ -128,15 +135,15 @@ var dessertItems = [
     {
         id: 1, 
         item: 'brownies',
-        ingredients: ['butter', 'cocoa powder', 'eggs', 'flour', 'salt', 'white sugar', 'vanilla extract'],
-        // ingredients : {
-        //     butter:'',
-        //     cocoa_powder:'',
-        //     eggs:'', 
-        //     flour:'',
-        //     salt:'', 
-        //     white_sugar:'', 
-        //     vanilla_extract:''},
+        // ingredients: ['butter', 'cocoa powder', 'eggs', 'flour', 'salt', 'white sugar', 'vanilla extract'],
+        ingredients : {
+            butter: '1/2 cup',
+            cocoa_powder:'1/2 cup',
+            eggs: 2, 
+            flour:'1/2 cup',
+            salt:'1/4 tsp', 
+            white_sugar:'1 1/8 cups', 
+            vanilla_extract:'2 tsps'},
         qty: 16
     },
     {
@@ -172,17 +179,27 @@ var dessertItems = [
         id: 4, 
         item: 'pancakes',
         ingredients : {
-            baking_powder:'',
-            butter:'',
-            eggs:'', 
-            flour:'',
-            milk:'', 
-            salt:'', 
-            white_sugar:'', 
-            vanilla_extract:'' },
+            baking_powder: 2,
+            butter: '1/4 cup',
+            eggs: '2', 
+            flour:'1 1/4 cups',
+            milk:'1 cup', 
+            salt:'1/2 tsp', 
+            white_sugar:'2 tblsp', 
+            baking_soda:'1 tsp' },
         qty: 12
     }
 ];
+
+//whichever dessert is selected the ingredients need to populate on the ingredients list
+// var list = document.getElementById('list')
+// dessertItems.ingredients.forEach(dessertButton => {
+//     var listItem = document.createElement('li')
+//     listItem.classList.add('ingredient-list-item', 'text-capitalize')
+    
+//     list.appendChild(listItem)
+//     listItem.innerText = dessertItems.ingredients
+// })
 var questions = [
         {
             id: 1,

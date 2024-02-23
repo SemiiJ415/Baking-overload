@@ -22,6 +22,32 @@ h1 {
     text-align: center;
 }
 
+.start-screen{
+    border: 3px solid hotpink;
+    height: 80vh;
+    width: 90vw;
+    background-image: url(/media/bitmojis4game2.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+.how-to-play{
+    border: 3px solid #45c46f;
+    height: 80vh;
+    width: 90vw;
+}
+
+#directions{
+    background-color: wheat;
+    color: black;
+    font-family: var(--font2);
+    font-size: 40px;
+    text-align: center;
+    text-shadow: 1px 1px 1px hotpink;
+    margin: 20px 20px;
+}
+
 #gameBoard{
     border: 3px solid hotpink;
     height: 80vh;
@@ -107,6 +133,7 @@ h2 {
     box-shadow: 1px 2px 3px 2px inset;
 
 }
+
 .magnet {
     color: yellow;
     background-color: black;
@@ -122,6 +149,7 @@ h4 {
 #list{
     margin-top: 0;
     padding: 0;
+    list-style: none;
     /* border: 2px solid blue; */
 }
 #questionDiv {
@@ -135,7 +163,14 @@ h4 {
     border-radius: 5px;
     box-shadow: 1px 2px 3px 2px;
 }
-
+.message{
+    /* width: 60%; */
+    font-size: 18px;
+    text-align: center;
+    color: black;
+    border-radius: 5px;
+    background-color: hotpink;
+}
 #next{
     padding: 0;
 }

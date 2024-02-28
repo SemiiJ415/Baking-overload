@@ -26,7 +26,7 @@ h1 {
     border: 3px solid hotpink;
     height: 80vh;
     width: 90vw;
-    background-image: url(/media/bitmojis4game2.png);
+    background-image: url(../media/bitmojis4game2.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -47,7 +47,7 @@ h1 {
     border: 3px solid #45c46f;
     height: 80vh;
     width: 70vw;
-    background-image: url(/media/conversionChart.png);
+    background-image: url(../media/conversionChart.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -67,7 +67,7 @@ h1 {
     border: 3px solid hotpink;
     height: 80vh;
     width: 90vw;
-    background-image: url(/media/kitchenbg.jpg);
+    background-image: url(../media/kitchenbg.jpg);
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;

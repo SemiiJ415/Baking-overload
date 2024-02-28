@@ -36,6 +36,21 @@ h1 {
     border: 3px solid #45c46f;
     height: 80vh;
     width: 90vw;
+    
+}
+
+.space{
+    margin-top: 80px;
+}
+
+.help{
+    border: 3px solid #45c46f;
+    height: 80vh;
+    width: 70vw;
+    background-image: url(/media/conversionChart.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
 }
 
 #directions{
@@ -192,24 +207,3 @@ h4 {
     font-size: 20px;
     background-color: hotpink;
 }
-/* 
-.answer-input {
-    background-color: hotpink;
-    color: white;
-    width: 50%;
-    height: 20%;
-    border-radius: 5px;
-
-} */
-
-/* .check-btn {
-    display: block;
-    color: black;
-    margin: auto;
-    margin-top: 10px;
-    background-color: aliceblue;
-    border: 2px solid hotpink;
-    border-radius: 5px;
-    font-size: 20px;
-    display: flex;
-} */

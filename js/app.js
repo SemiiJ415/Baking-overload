@@ -9,16 +9,17 @@
  * 
  */
 
-//buttons
-const helpBtn = document.getElementById('helpBtn')
+
 const answerChoices = document.querySelectorAll('.answer-choices')
-const answerBoxes = document.querySelector('.answer-boxes')
+const startScreen = document.getElementById('startScreen')
+const gameBoard = document.getElementById('gameBoard')
+const dessertChoice = document.getElementById('dessertChoice')
 
 //list for ingredients div
 let ingredientsList = []
 
 // dessert id, name, ingredients, and qty of recipe 
-var dessertItems = [
+const dessertItems = [
     {
         id: 1, 
         item: 'brownie',
@@ -78,6 +79,7 @@ var dessertItems = [
         qty: 12
     }
 ]
+
 //array of questions and answers
 const questions = [
         {
@@ -194,21 +196,17 @@ const questions = [
         },
     ]
 
-//start game
-const startBtn = document.getElementById('startBtn')
-startBtn.addEventListener('click', ()=>{
-    startGame()
-})
 
+//game directions
 const howToPlayBtn = document.getElementById('howToPlayBtn')
 howToPlayBtn.addEventListener('click', ()=>{
     instructions()
 })
-//game directions
 const howToPlay = document.getElementById('howToPlay')
 function instructions(){
     startScreen.classList.add('d-none')
     gameBoard.classList.add('d-none')
+    helpDiv.classList.add('d-none')
     howToPlay.classList.remove('d-none')
     const directionsDiv = document.getElementById('directions')
     // directionsDiv.classList.remove('d-none')
@@ -216,35 +214,66 @@ function instructions(){
     directionsDiv.innerText = directions
 }
 
-const startScreen = document.getElementById('startScreen')
-const gameBoard = document.getElementById('gameBoard')
+//help button
+let needHelp = false
+const helpBtn = document.getElementById('helpBtn')
+helpBtn.addEventListener('click', ()=>{
+    
+    needHelp = !needHelp
+    help(needHelp)
+})
+const helpDiv = document.getElementById('help')
+function help(bool){
+    if (bool){
+        helpDiv.classList.remove('d-none')
+    } else {
+        helpDiv.classList.add('d-none')
+    }
+}
+
+//start game
+const startBtn = document.getElementById('startBtn')
+startBtn.addEventListener('click', ()=>{
+    startGame()
+})
+
 function startGame(){
     startScreen.classList.add('d-none')
     gameBoard.classList.remove('d-none')
     howToPlay.classList.add('d-none')
     chooseDessert()
 }
+
 function chooseDessert(){
-    const dessertChoice = document.getElementById('dessertChoice')
     dessertChoice.classList.remove('d-none')
     displayDesserts()
 }
+
+const buttons = document.getElementById('buttons')
 function displayDesserts(){
-    const buttons = document.getElementById('buttons')
     buttons.classList.remove('d-none')
 }
+
+function spaceOut(){
+    dessertChoice.classList.add('d-none')
+    buttons.classList.add('space')
+}
+
 //loop through each dessert button to build list and display question
 const dessertBtns = document.querySelectorAll('.dessertBtns')
 dessertBtns.forEach(btn =>{
     btn.addEventListener('click', ()=>{
+        spaceOut()
         buildList(btn)
         displayQuestion(btn)
     })
 })
+
 //remove previous list items from ingredient list
 const removeLI =(parent, child)=> {
     parent.removeChild(child)
     }
+
 //build ingredient list for selected dessert
 const buildList =(btn)=> {
     const ingredientsDiv = document.getElementById('ingredientsDiv')
@@ -256,41 +285,39 @@ const buildList =(btn)=> {
     ingredientListItems.forEach(item => {
         removeLI(list, item)
     })
-    // console.log(dessertBtns);
     for (let i = 0; i < dessertItems.length; i++){
         if(btn.dataset.item === dessertItems[i].item){
-            // var list = document.getElementById('list')
-            // for (let ingredient in dessertItems[i].ingredients)
-
             // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration
             let currentItem = dessertItems[i].ingredients
-            // console.log(currentItem)
             for(const [ingredient, amt] of Object.entries(currentItem)){
                 var listItem = document.createElement('li')
+                listItem.classList.add('ingredient-list-item')
                 list.appendChild(listItem)
                 listItem.innerText = `${ingredient}: ${amt}`}
             }
         }
-    
-        
     }
 
 //display random question from selected dessert
+const questionArr = []
 function displayQuestion(btn){
-    let questionArr = []
     let data
-    console.log(btn.dataset.item)
     for (let i = 0; i < questions.length; i++) {
+        let ran = Math.floor(Math.random() * questionArr.length)
         if(btn.dataset.item == questions[i].category) {
             questionArr.push(questions[i])
-            let ran = Math.floor(Math.random() * questionArr.length)
             data = questionArr[ran]
                 let question = document.getElementById('question')
                 question.innerText = `${data.question}` 
             }
         }
         displayAnswerChoices(data)
+        //display answer choices
+        //select answer
+        //check answer
+        // nextQuestion(data.id)
     }
+
 //display answer choices 
 function displayAnswerChoices(d){ 
     const choice1 = document.getElementById('choice1')
@@ -303,6 +330,7 @@ function displayAnswerChoices(d){
     // questionChoices(d)
     selectAnswer(d)
 }
+
 //handles answer selected by user
 function selectAnswer(d) {
     console.log(d.correctChoice)
@@ -310,14 +338,12 @@ function selectAnswer(d) {
     // let selected = d.target
     answerChoices.forEach((element) => {
         element.addEventListener('click', (d) => {
-        // Your event handling logic here
-        // d.target
-        // console.log('Element clicked:', d.target.innerText);
         let userChoice = d.target.innerText
         checkAnswer(correctChoice, userChoice)
-        });
     });
+});
 }
+
 //checks user answer vs correct answer
 function checkAnswer(correctChoice, userChoice){
     console.log(correctChoice)
@@ -334,200 +360,28 @@ function checkAnswer(correctChoice, userChoice){
         message.innerText = incorrect
     }
 }
+
+//update function grab id of question displayed and splice from array
+function updateQuestion(){
+    console.log(questionArr)
+    for(let i = 0; i < questionArr.length; i++){
+        if(questionArr[i].id == id ){
+            questionArr.splice(questionArr[i], 1)
+            const results = questionArr.splice(questionArr[i], 1)
+            let question = document.getElementById('question')
+            question.innerText = results
+        }
+    }
+}
 //displays next question button
-function nextQuestion(data){
-    // console.log(d)
+function nextQuestion(){
+    console.log(questionArr)
     const next = document.getElementById('nextBtn')
     next.classList.remove('d-none')
     next.addEventListener('click', ()=>{
-        //splice questions array
-        displayQuestion(btn)
-        // ran = Math.floor(Math.random() * questions.length)
-        console.log('clicked')
-        // return questions.splice(ran, 1)
-        // const question = document.getElementById('question')
-        // question.innerText = innerQuestion[1]
-
+    updateQuestion()
     })
 
 }
-//holds array of unasked questions
-function displayNextQuestion(){
-    ran = Math.floor(Math.random() * questions.length)
 
-    return questions.splice(ran, 1)
-}
-
-// // choc chip button selected
-// chocChip = document.getElementById('chocChipBtn')
-// chocChip.addEventListener('click', ()=>{
-//         const chocChipIngredients = dessertItems[1].ingredients
-//         var list = document.getElementById('list')
-//         for (const ingredient in chocChipIngredients) {
-//             var listItem = document.createElement('li')
-//             listItem.classList.add('ingredient-list-item', 'text-capitalize', 'list-unstyled')
-//             list.appendChild(listItem)
-//             listItem.innerText = `${ingredient}: ${chocChipIngredients[ingredient]}`
-//             // console.log(`${ingredient}: ${chocChipIngredients[ingredient]}`)
-//             // choc chip questions
-//             var chocChipCookieQuestions = [
-//                 'For every 12 chocolate chip cookies you need a whole egg. Morty wants 3 dozen chocolate chip cookies. How many eggs do you need?',
-//                 'For every 12 chocolate chip cookies you 1/2 a cup of white sugar. Susie wants 24 chocolate chip cookies. How many cups of sugar do you need?',
-//                 'For every 12 chocolate chip cookies you need 4 ounces of semi-sweet chocolate chips. Anthony wants 4 dozen chocolate chip cookies. How many cups of chocolate chips do you need?',
-//                 'For every 12 chocolate chip cookies you need a teaspoon of salt. Morty wants 2 dozen chocolate chip cookies. How many teaspoons of salt do you need?'
-//                     // {
-//                     //     id: 5,
-//                     //     question: 'For every 12 chocolate chip cookies you need a whole egg. Morty wants 3 dozen chocolate chip cookies. How many eggs do you need?',
-//                     //     solution: 3,
-//                     // },
-//                     // {
-//                     //     id: 6,
-//                     //     question: 'For every 12 chocolate chip cookies you 1/2 a cup of white sugar. Susie wants 24 chocolate chip cookies. How many cups of sugar do you need?',
-//                     //     solution: 1,
-//                     // },
-//                     // {
-//                     //     id: 7,
-//                     //     question: 'For every 12 chocolate chip cookies you need 4 ounces of semi-sweet chocolate chips. Anthony wants 4 dozen chocolate chip cookies. How many cups of chocolate chips do you need?',
-//                     //     solution: 2,
-//                     // },
-//                     // {
-//                     //     id: 8,
-//                     //     question: 'For every 12 chocolate chip cookies you need a teaspoon of salt. Morty wants 2 dozen chocolate chip cookies. How many teaspoons of salt do you need?',
-//                     //     solution: 3,
-//                     // },
-//             ]
-//             // choc chip answers
-//             var chocChipCookieAnswers = [3, 1, 2, 3]
-//             // grab random choc chip cookie question
-//             var randomIndex = Math.floor(Math.random() * chocChipCookieQuestions.length)
-//             var randomChocChipCookieQuestion = chocChipCookieQuestions[randomIndex]
-//              // display random choc chip cookie question
-//             question = document.getElementById('question')
-//             question.innerText = `${randomChocChipCookieQuestion}`
-            
-//             // console.log(chocChipCookieQuestions)
-//         }
-//         })
-
-// cupcake = document.getElementById('cupcakeBtn')
-// cupcake.addEventListener('click', ()=>{
-//         const cupcakeIngredients = dessertItems[2].ingredients
-//         // console.log(brownieIngredients)
-//         var list = document.getElementById('list')
-//         for (const ingredient in cupcakeIngredients) {
-//             var listItem = document.createElement('li')
-//             listItem.classList.add('ingredient-list-item', 'text-capitalize', 'list-unstyled')
-            
-//             list.appendChild(listItem)
-//             listItem.innerText = `${ingredient}: ${cupcakeIngredients[ingredient]}`
-//             // console.log(`${ingredient}: ${cupcakeIngredients[ingredient]}`)
-//             // cupcake questions
-//             var cupcakesQuestions = [
-//                 'For every 24 cupcakes you need 4 whole eggs. Keisha wants 3 dozen cupcakes, how many eggs do you need?',
-//                 'For every 24 cupcakes you need 155 grams of white sugar. Kim wants 24 cupcakes, how many cups of white sugar do you need?',
-//                 'For every 24 cupcakes you need 1 cup of unsalted butter for the frosting. Janae wants a dozen cupcakes, how many cups of unsalted butter do you need?',
-//                 'For every 24 cupcakes you need 460 grams of powdered sugar for the frosting. Taylor wants a dozen cupcakes, how many cups of powdered sugar do you need?'
-//                     // {
-//                     //     id: 9,
-//                     //     question: 'For every 24 cupcakes you need 4 whole eggs. Keisha wants 3 dozen cupcakes, how many eggs do you need?',
-//                     //     solution: 5,
-//                     // },
-//                     // {
-//                     //     id: 10,
-//                     //     question: 'For every 24 cupcakes you need 155 grams of white sugar. Kim wants 24 cupcakes, how many cups of white sugar do you need?',
-//                     //     solution: 3/4,
-//                     // },
-//                     // {
-//                     //     id: 11,
-//                     //     question: 'For every 24 cupcakes you need 1 cup of unsalted butter for the frosting. Janae wants a dozen cupcakes, how many cups of unsalted butter do you need?',
-//                     //     solution: 1/2,
-//                     // },
-//                     // {
-//                     //     id: 12,
-//                     //     question: 'For every 24 cupcakes you need 460 grams of powdered sugar for the frosting. Taylor wants a dozen cupcakes, how many cups of powdered sugar do you need?',
-//                     //     solution: 2,
-//                     // }
-//             ]
-//             // cupcakes answers
-//             var cupcakesAnswers = [5, 3/4, 1/2, 2]
-//             // grab random cupcakes question
-//             var randomIndex = Math.floor(Math.random() * cupcakesQuestions.length)
-//             var randomCupcakesQuestion = cupcakesQuestions[randomIndex]
-//              // display random cupcakes question
-//             question = document.getElementById('question')
-//             question.innerText = `${randomCupcakesQuestion}`
-            
-//             // console.log(cupcakesQuestions)
-//         }
-//         })
-
-// pancake = document.getElementById('pancakesBtn')
-// pancake.addEventListener('click', ()=>{
-//         const pancakeIngredients = dessertItems[3].ingredients
-//         var list = document.getElementById('list')
-//         for (const ingredient in pancakeIngredients) {
-//             var listItem = document.createElement('li')
-//             listItem.classList.add('ingredient-list-item', 'text-capitalize', 'list-unstyled')
-            
-//             list.appendChild(listItem)
-//             listItem.innerText = `${ingredient}: ${pancakeIngredients[ingredient]}`
-//             // console.log(`${ingredient}: ${pancakeIngredients[ingredient]}`)
-//             var pancakesQuestions = [
-//                 'For every 12 pancakes you need 186.5 grams of all purpose flour. Dhon wants a dozen pancakes, how many cups of all purpose flour do you need?',
-//                 'For every 12 pancakes you need 1 cup of milk. Maggie wants a 4 dozen pancakes, how many cups of milk do you need?',
-//                 'For every 12 pancakes you need 56.75 grams of melted butter. Qua wants a dozen pancakes, how many cups of melted butter do you need?',
-//                 'For every 12 pancakes you need 2 teaspoons of baking powder. Cydney wants 6 pancakes, how many teaspoons of baking powder do you need?'
-//                     // {
-//                     //     id: 13,
-//                     //     question: 'For every 12 pancakes you need 186.5 grams of all purpose flour. Dhon wants a dozen pancakes, how many cups of all purpose flour do you need?',
-//                     //     solution: 1.5
-//                     // },
-//                     // {
-//                     //     id: 14,
-//                     //     question: 'For every 12 pancakes you need 1 cup of milk. Maggie wants a 4 dozen pancakes, how many cups of milk do you need?',
-//                     //     solution: 4
-//                     // },
-//                     // {
-//                     //     id: 15,
-//                     //     question: 'For every 12 pancakes you need 56.75 grams of melted butter. Qua wants a dozen pancakes, how many cups of melted butter do you need?',
-//                     //     solution: 1/4
-//                     // },
-//                     // {
-//                     //     id: 16,
-//                     //     question: 'For every 12 pancakes you need 2 teaspoons of baking powder. Cydney wants 6 pancakes, how many teaspoons of baking powder do you need?',
-//                     //     solution: 1
-//                     // } 
-//                 ]
-//                 // pancakes answers
-//                 var pancakesAnswers = [1.5, 4, 1/4, 1]
-//                 // grab random pancakes question
-//                 var randomIndex = Math.floor(Math.random() * pancakesQuestions.length)
-//                 var randomPancakesQuestion = pancakesQuestions[randomIndex]
-//                  // display random cupcakes question
-//                 question = document.getElementById('question')
-//                 question.innerText = `${randomPancakesQuestion}`
-                
-//                 // console.log(pancakesQuestions)
-//         }
-//         })
-
-
-// const questionCategory = []
-//     for(let i = 0; i < questions.length; i++) {
-//         questionCategory.push(questions[i].category)
-//     }
-/**
- * Filter array items based on search criteria (query)
- */
-// function filterItems(arr, query) {
-//     return arr.filter((el) => el.toLowerCase().includes(query.toLowerCase()));
-// }
-// brnCategory = (filterItems(questionCategory, "brown")); 
-// cookCategory = (filterItems(questionCategory, "cook"));
-// cupCategory = (filterItems(questionCategory, "cup"));
-// panCategory = (filterItems(questionCategory, "pan"));
-
-// function questionChoices(choice, btn){
-
-    
 
